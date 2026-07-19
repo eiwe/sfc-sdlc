@@ -48,7 +48,7 @@ Significant means:
 - Has security, privacy, or cost implications.
 - Would surprise another agent picking up the project.
 
-Use the ADR template in `skills/spec-first-sdlc/templates/ADR.md` (installed as `docs/decisions/ADR-template.md`).
+Use the ADR template in `skills/adopt/templates/ADR.md` (installed as `docs/decisions/ADR-template.md`).
 
 ### 3. Specify
 
@@ -61,7 +61,7 @@ A PRD must include:
 - Out-of-scope items
 - Open questions
 
-Use the PRD template in `skills/spec-first-sdlc/templates/PRD.md` (installed as `docs/prd/PRD-template.md`).
+Use the PRD template in `skills/adopt/templates/PRD.md` (installed as `docs/prd/PRD-template.md`).
 
 ### 4. Implement
 

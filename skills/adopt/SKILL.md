@@ -1,5 +1,5 @@
 ---
-name: spec-first-sdlc
+name: adopt
 description: >-
   Adopts and runs the Spec-First Collaborative SDLC — a document-driven workflow
   (AGENTS.md as source of truth, PRDs, ADRs, HANDOFF, CHANGELOG, and mandatory
@@ -18,10 +18,12 @@ and decisions are written before code, and the durable rules live in a context
 file the harness reloads every session — so the process survives new sessions,
 `/clear`, and context compaction.
 
-This skill is harness-agnostic. It is invoked as:
+This skill only needs to be invoked **once per repo, to bootstrap** it. After that,
+the SDLC applies automatically every session in both harnesses via the installed
+`AGENTS.md` / `CLAUDE.md` — no further invocation. It is invoked as:
 
-- **Claude Code:** `/spec-first-sdlc:spec-first-sdlc` (plugin) or `/spec-first-sdlc` (standalone skill).
-- **Pi:** `/skill:spec-first-sdlc`.
+- **Claude Code:** `/sdlc:adopt` (plugin) or `/adopt` (standalone skill), or just ask in natural language ("adopt the spec-first SDLC in this repo").
+- **Pi:** `/skill:adopt`, or ask in natural language.
 
 The templates this skill installs are bundled next to this file, in `./templates/`
 (relative to this `SKILL.md`). Read them from the skill's own directory.
@@ -49,9 +51,10 @@ Do this when the user asks to start / adopt / set up the SDLC. Locate the bundle
    - `templates/dot-claude/hooks/session-reminder.mjs` → `.claude/hooks/session-reminder.mjs` (cross-platform Node reminder printer).
 5. **Fill in project specifics** in `AGENTS.md`: the one-paragraph project summary, the exact build/test/lint commands, architecture notes, and the default branch name.
 6. **Write the initial `HANDOFF.md`** describing the project's current state and the first priority.
-7. **Tell the user** the SDLC is adopted; that from now on `AGENTS.md` is the source of truth read every session by both harnesses; and that the hard gates need one manual step — enabling GitHub branch protection on the default branch (require a PR, an approving review, and the CI check; block direct pushes). The exact `gh` command is in `GITHUB_WORKFLOW.md` in the spec-first-sdlc skill/plugin repo (this skill's own repo), not in the adopted project.
+7. **Commit the scaffolded files** (`AGENTS.md`, `CLAUDE.md`, `HANDOFF.md`, `CHANGELOG.md`, `TESTING.md`, `docs/`, `.github/`, `.claude/`). Committing is what makes the SDLC automatic and portable: every future session — for the user, for teammates, and in both Claude Code and Pi — auto-loads these with no skill invocation, even after context compaction.
+8. **Tell the user** the SDLC is adopted and now applies automatically (no need to invoke this skill again); that `AGENTS.md` is the source of truth read every session by both harnesses; and that the hard gates need one manual step — enabling GitHub branch protection on the default branch (require a PR, an approving review, and the CI check; block direct pushes). The exact `gh` command is in `GITHUB_WORKFLOW.md` in this skill's source repo (https://github.com/eiwe/sfc-sdlc), not in the adopted project.
 
-Adoption is complete only when `AGENTS.md` + `CLAUDE.md` exist at the repo root and `AGENTS.md` contains the real project commands.
+Adoption is complete only when `AGENTS.md` + `CLAUDE.md` exist at the repo root, `AGENTS.md` contains the real project commands, and the files are committed.
 
 ## Task B — Follow the SDLC on an existing project
 

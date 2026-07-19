@@ -10,9 +10,9 @@ artifact work in both:
 
 | Concern | Claude Code | Pi | Shared choice here |
 | --- | --- | --- | --- |
-| Skill file | `SKILL.md` + YAML frontmatter `name`/`description` (agentskills.io) | `SKILL.md` + YAML frontmatter `name`/`description` (same constraints) | One `skills/spec-first-sdlc/SKILL.md` |
-| Skill name rules | ≤64 chars, lowercase/digits/hyphens | ≤64 chars, lowercase/digits/hyphens | `spec-first-sdlc` |
-| Bundled skills dir | `skills/<name>/SKILL.md` at plugin root | `skills/<name>/SKILL.md` auto-discovered in a package | `skills/spec-first-sdlc/` |
+| Skill file | `SKILL.md` + YAML frontmatter `name`/`description` (agentskills.io) | `SKILL.md` + YAML frontmatter `name`/`description` (same constraints) | One `skills/adopt/SKILL.md` |
+| Skill name rules | ≤64 chars, lowercase/digits/hyphens | ≤64 chars, lowercase/digits/hyphens | `adopt` (plugin `sdlc`) |
+| Bundled skills dir | `skills/<name>/SKILL.md` at plugin root | `skills/<name>/SKILL.md` auto-discovered in a package | `skills/adopt/` |
 | Session context file | `CLAUDE.md` (not `AGENTS.md`) | `AGENTS.md` **or** `CLAUDE.md`, natively | `AGENTS.md` + `CLAUDE.md` bridge |
 | Enforcement | hooks (`.claude/settings.json`), CI | extensions, CI | GitHub branch protection + CI; CC hooks |
 
@@ -68,12 +68,12 @@ long as it avoids plugin-only path variables (this one does — it references it
 
 | Install | Claude Code | Pi |
 | --- | --- | --- |
-| From this repo as plugin/package | `/plugin marketplace add eiwe/sfc-sdlc` → `/plugin install spec-first-sdlc@sfc-sdlc` | `pi install git:github.com/eiwe/sfc-sdlc` |
-| Local, no install | `claude --plugin-dir ./` | `pi --skill ./skills/spec-first-sdlc` |
-| Standalone skill | copy `skills/spec-first-sdlc/` → `~/.claude/skills/spec-first-sdlc/` | copy `skills/spec-first-sdlc/` → `~/.pi/agent/skills/spec-first-sdlc/` |
-| Invoke | `/spec-first-sdlc:spec-first-sdlc` (plugin) or `/spec-first-sdlc` (skill) | `/skill:spec-first-sdlc` |
+| From this repo as plugin/package | `/plugin marketplace add eiwe/sfc-sdlc` → `/plugin install sdlc@sfc-sdlc` → `/reload-plugins` | `pi install git:github.com/eiwe/sfc-sdlc` |
+| Local, no install | `claude --plugin-dir ./` | `pi --skill ./skills/adopt` |
+| Standalone skill | copy `skills/adopt/` → `~/.claude/skills/adopt/` | copy `skills/adopt/` → `~/.pi/agent/skills/adopt/` |
+| Invoke (one-time bootstrap) | `/sdlc:adopt` (plugin) or `/adopt` (standalone skill) | `/skill:adopt` |
 
-Note: when copying the **standalone skill**, copy the inner `skills/spec-first-sdlc/`
+Note: when copying the **standalone skill**, copy the inner `skills/adopt/`
 folder (which has no `.claude-plugin/plugin.json`). Copying the whole repo into a
 skills directory would instead load it as a skills-directory *plugin*.
 

@@ -28,33 +28,46 @@ The methodology has two layers:
 
 Repository: **https://github.com/eiwe/sfc-sdlc**
 
+You install the plugin **once**, then run the `adopt` bootstrap **once per repo**.
+After that the SDLC applies automatically — see [Automatic use](#automatic-use-no-per-session-invocation).
+
 ### Claude Code
 
 ```
-# Plugin via marketplace (recommended)
+# Install the plugin (once)
 /plugin marketplace add eiwe/sfc-sdlc
-/plugin install spec-first-sdlc@sfc-sdlc
-# then invoke:
-/spec-first-sdlc:spec-first-sdlc
+/plugin install sdlc@sfc-sdlc
+/reload-plugins
+# Bootstrap a repo (once, from inside that repo)
+/sdlc:adopt
 ```
+
+`/plugin install` defaults to **user scope** (the `adopt` command becomes available
+in all your repos). Scope only controls where the bootstrap command is *available* —
+it does **not** make the SDLC run automatically. That comes from the files `adopt`
+commits into the repo (see [Automatic use](#automatic-use-no-per-session-invocation)).
+`/reload-plugins` is required after install before the command works.
 
 | Other methods | Steps |
 | --- | --- |
-| **Plugin (local clone)** | `git clone https://github.com/eiwe/sfc-sdlc && claude --plugin-dir ./sfc-sdlc` |
-| **Standalone skill** | Copy `skills/spec-first-sdlc/` to `~/.claude/skills/spec-first-sdlc/` (personal) or `.claude/skills/spec-first-sdlc/` (project). Invoke with `/spec-first-sdlc`. |
+| **Plugin (local clone)** | `git clone https://github.com/eiwe/sfc-sdlc && claude --plugin-dir ./sfc-sdlc`, then `/sdlc:adopt` |
+| **Standalone skill** | Copy `skills/adopt/` to `~/.claude/skills/adopt/` (personal) or `.claude/skills/adopt/` (project). Invoke with `/adopt`. |
 
 ### Pi
 
 ```
-# Package (recommended)
+# Install the package (once)
 pi install git:github.com/eiwe/sfc-sdlc
-# then invoke:
-/skill:spec-first-sdlc
+# Bootstrap a repo (once, from inside that repo)
+/skill:adopt
 ```
 
 | Other methods | Steps |
 | --- | --- |
-| **Standalone skill** | Copy `skills/spec-first-sdlc/` to `~/.pi/agent/skills/spec-first-sdlc/` (global) or `.pi/skills/spec-first-sdlc/` (project), or run `pi --skill ./skills/spec-first-sdlc`. |
+| **Standalone skill** | Copy `skills/adopt/` to `~/.pi/agent/skills/adopt/` (global) or `.pi/skills/adopt/` (project), or run `pi --skill ./skills/adopt`. |
+
+You can also skip the slash command entirely and just say *"adopt the spec-first SDLC
+in this repo"* — the `adopt` skill is model-invoked in both harnesses.
 
 > Forking? Replace `eiwe/sfc-sdlc` throughout this README and `docs/COMPATIBILITY.md`,
 > and the `homepage`/`repository`/`author` fields in `.claude-plugin/plugin.json`
@@ -63,17 +76,35 @@ pi install git:github.com/eiwe/sfc-sdlc
 See [`docs/COMPATIBILITY.md`](docs/COMPATIBILITY.md) for exactly how the layout
 maps onto each harness's conventions.
 
-## Use
+## Automatic use (no per-session invocation)
 
-1. Install (above), then invoke the skill and ask it to **adopt** the SDLC in your repo.
-2. It scaffolds `AGENTS.md`, `CLAUDE.md`, `HANDOFF.md`, `CHANGELOG.md`, `TESTING.md`,
-   `docs/decisions/`, `docs/prd/`, the PR template, CI, and the Claude Code hooks.
-3. Fill in the real project commands in `AGENTS.md`.
-4. Enable the GitHub hard gates (branch protection) per [`docs/GITHUB_WORKFLOW.md`](docs/GITHUB_WORKFLOW.md).
+You do **not** invoke a skill each session. A skill never runs on its own — it is
+invoked on demand — so the plugin/skill is only a **one-time bootstrap**, and its
+install scope does not change that.
 
-From then on, every session in either harness starts by reading `HANDOFF.md` and
-`AGENTS.md`, and every change flows through the decision → spec → implement →
-verify → review → handoff phases and their gates.
+What makes the SDLC apply automatically is what `adopt` writes into your repo:
+
+- **`AGENTS.md`** — Pi loads it into context automatically every session.
+- **`CLAUDE.md`** (imports `AGENTS.md`) — Claude Code loads it automatically every
+  session and re-injects it from disk after `/compact` and `/clear`.
+- **`.claude/settings.json`** hooks — fire automatically at session start.
+
+Once these are **committed** to a repo, every session in that repo — in Claude Code
+and Pi, for you and any collaborator — follows the SDLC with nothing to invoke, even
+after context compaction. A repo that already has a committed `AGENTS.md`/`CLAUDE.md`
+is governed automatically **even with no plugin installed at all**.
+
+## Setting up a repo (one-time)
+
+1. Install the plugin/package once (above).
+2. From inside the target repo, run `/sdlc:adopt` (Claude Code) or `/skill:adopt`
+   (Pi) — or just ask for it in natural language.
+3. It scaffolds `AGENTS.md`, `CLAUDE.md`, `HANDOFF.md`, `CHANGELOG.md`, `TESTING.md`,
+   `docs/decisions/`, `docs/prd/`, the PR template, CI, and the hooks.
+4. Fill in the real project commands in `AGENTS.md`, then **commit** the files.
+5. Enable the GitHub hard gates (branch protection) per [`docs/GITHUB_WORKFLOW.md`](docs/GITHUB_WORKFLOW.md).
+
+After that it is automatic — you never invoke `adopt` again in that repo.
 
 ## What's in this repo
 
@@ -81,8 +112,8 @@ verify → review → handoff phases and their gates.
 .claude-plugin/plugin.json         Claude Code plugin manifest
 .claude-plugin/marketplace.json    Claude Code single-plugin marketplace
 package.json                       Pi package manifest (+ npm metadata)
-skills/spec-first-sdlc/SKILL.md    The dual-compatible skill (bootstrap + rules)
-skills/spec-first-sdlc/templates/  What the skill installs into a target project
+skills/adopt/SKILL.md              The dual-compatible bootstrap skill (/sdlc:adopt)
+skills/adopt/templates/            What the skill installs into a target project
 docs/SDLC.md                       The methodology in full
 docs/GITHUB_WORKFLOW.md            Prescriptive GitHub workflow + hard-gate setup
 docs/COMPATIBILITY.md             How this maps to Claude Code and Pi
