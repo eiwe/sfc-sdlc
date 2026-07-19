@@ -1,6 +1,7 @@
 # Testing Policy
 
-A test suite is **required** for this project. No change that introduces new behavior or fixes a bug may be merged without appropriate test coverage.
+A test suite is **required**. No change that introduces new behavior or fixes a
+bug may be merged without appropriate test coverage. This is the test gate.
 
 ## Required tests
 
@@ -15,7 +16,7 @@ A test suite is **required** for this project. No change that introduces new beh
 
 ## Running tests
 
-<!-- Exact command(s). -->
+<!-- Exact command(s). Must match the "Commands" section of AGENTS.md and .github/workflows/ci.yml. -->
 
 ```bash
 # Example:
@@ -24,7 +25,7 @@ A test suite is **required** for this project. No change that introduces new beh
 
 ## CI expectations
 
-- The test suite must pass before merge.
+- The test suite must pass before merge (enforced by CI + branch protection).
 - New code should not reduce overall coverage without justification.
 
 ## What does not need tests

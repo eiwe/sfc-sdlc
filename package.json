@@ -1,0 +1,21 @@
+{
+  "name": "sfc-sdlc",
+  "version": "0.1.0",
+  "description": "Spec-First Collaborative SDLC — a document-driven workflow installable as a skill or package in the Pi coding harness and as a plugin/skill in Claude Code.",
+  "license": "MIT",
+  "author": "Eiwe",
+  "homepage": "https://github.com/eiwe/sfc-sdlc",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eiwe/sfc-sdlc.git"
+  },
+  "keywords": [
+    "pi-package",
+    "pi-coding-agent",
+    "claude-code",
+    "agents-md",
+    "sdlc",
+    "spec-first",
+    "skill"
+  ]
+}

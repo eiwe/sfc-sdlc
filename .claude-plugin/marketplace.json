@@ -1,0 +1,13 @@
+{
+  "name": "sfc-sdlc",
+  "owner": { "name": "Eiwe" },
+  "description": "Marketplace for the Spec-First Collaborative SDLC plugin.",
+  "plugins": [
+    {
+      "name": "spec-first-sdlc",
+      "source": "./",
+      "description": "The Spec-First Collaborative SDLC skill and its adoption templates.",
+      "category": "workflow"
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+# Spec-First SDLC — CI (the test gate).
+# Copied to .github/workflows/ci.yml on adoption. Replace the placeholder commands
+# with this project's real ones (keep them in sync with AGENTS.md and TESTING.md).
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main] # or master
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # --- Replace the steps below with your real toolchain setup and commands ---
+      - name: Set up toolchain
+        run: echo "TODO: set up language/runtime (e.g. actions/setup-node, setup-python)"
+
+      - name: Install dependencies
+        run: echo "TODO: install deps (e.g. npm ci)"
+
+      - name: Lint / type-check
+        run: echo "TODO: lint/type-check command"
+
+      - name: Test (test gate)
+        run: echo "TODO: test command — must fail the build on failure"
+
+  secret-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Scan for secrets
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Required for organization-owned repos (free for personal accounts).
+          # Add the secret, then uncomment:
+          # GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }}

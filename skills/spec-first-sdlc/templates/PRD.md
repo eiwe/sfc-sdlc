@@ -1,7 +1,9 @@
 # PRD: [Feature Name]
 
-**Status:** Draft | Approved | Superseded  
-**Date:** YYYY-MM-DD  
+<!-- Save as docs/prd/short-kebab-title.md -->
+
+**Status:** Draft | Approved | Superseded
+**Date:** YYYY-MM-DD
 **Owner:** [Name]
 
 ## Problem
@@ -22,11 +24,11 @@
 
 ## Acceptance criteria
 
-<!-- Specific, testable criteria. -->
+<!-- Specific, testable criteria. These drive the test gate. -->
 
 ## Out of scope
 
-<!-- Boundaries that implementation must respect. -->
+<!-- Boundaries the implementation must respect. -->
 
 ## Open questions
 

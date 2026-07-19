@@ -1,0 +1,10 @@
+{
+  "name": "spec-first-sdlc",
+  "version": "0.1.0",
+  "description": "Adopt and follow the Spec-First Collaborative SDLC: a document-driven workflow (AGENTS.md source of truth, PRDs, ADRs, HANDOFF, CHANGELOG, and enforced test/review/handoff gates) that persists across sessions and compaction.",
+  "author": { "name": "Eiwe" },
+  "homepage": "https://github.com/eiwe/sfc-sdlc",
+  "repository": "https://github.com/eiwe/sfc-sdlc",
+  "license": "MIT",
+  "keywords": ["sdlc", "agents-md", "spec-first", "workflow", "process", "skill"]
+}

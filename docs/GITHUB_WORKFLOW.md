@@ -51,6 +51,35 @@ Must use the project pull request template. At minimum it must contain:
 
 Adversarial review: for non-trivial changes, ask an independent agent or human reviewer to verify assumptions, look for drift, and confirm tests cover the change.
 
+## Enforcing the gates (setup)
+
+Context files are guidance, not law — both Claude Code and Pi can ignore them. Make
+the gates real with platform-side enforcement, which works regardless of harness or OS.
+
+**GitHub branch protection / ruleset** on the default branch — require a PR, block
+direct pushes, require an approving review and passing CI:
+
+```bash
+# Requires: gh CLI, authenticated, admin on the repo. Replace OWNER/REPO and main.
+gh api -X PUT repos/OWNER/REPO/branches/main/protection \
+  -H "Accept: application/vnd.github+json" \
+  -F "required_pull_request_reviews[required_approving_review_count]=1" \
+  -F "required_status_checks[strict]=true" \
+  -f "required_status_checks[contexts][]=verify" \
+  -F "enforce_admins=true" \
+  -F "restrictions=null"
+```
+
+**CI** — the shipped `.github/workflows/ci.yml` provides the `verify` (test gate)
+and `secret-scan` jobs; wire in the project's real build/test/lint commands so the
+required status check is meaningful.
+
+**Client-side (Claude Code)** — the shipped `.claude/settings.json` adds a
+`SessionStart` reminder and a `PreToolUse` guard (`.claude/hooks/guard-push.mjs`)
+that blocks `git push` to a protected branch. This is a best-effort convenience;
+branch protection is the real gate. Override an approved push with
+`SDLC_ALLOW_PUSH_MAIN=1`.
+
 ## Merging
 
 - Use **squash merge** for feature branches with many small commits.

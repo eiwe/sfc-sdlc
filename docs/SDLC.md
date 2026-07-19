@@ -13,16 +13,22 @@ A process for building software with AI agents. It is language-agnostic, tool-ag
 
 ## Required documents
 
-- `AGENTS.md` — universal rules for every agent on every session.
+- `AGENTS.md` — universal rules, read first on every session. This is the **source
+  of truth**: both Claude Code and Pi load it into context each session and rebuild
+  it from disk after context compaction, so the rules are always present.
+- `CLAUDE.md` — a one-line `@AGENTS.md` import so Claude Code (which does not read
+  `AGENTS.md` natively) loads the same rules.
 - `HANDOFF.md` — living status document so the next session knows where to start.
 - `CHANGELOG.md` — user-visible changes, hand-maintained.
 - `docs/decisions/` — architecture/product/design decision records (ADRs).
 - `docs/prd/` or `docs/specs/` — product requirements documents.
 - `TESTING.md` — test policy and requirements.
 
+See [`COMPATIBILITY.md`](COMPATIBILITY.md) for how this maps onto each harness.
+
 ## Phases
 
-### 1. Understand (every session)
+### 1. Understand (every session, and after every context compaction)
 
 Before writing or changing anything, the agent reads:
 
@@ -42,7 +48,7 @@ Significant means:
 - Has security, privacy, or cost implications.
 - Would surprise another agent picking up the project.
 
-Use the ADR template in `templates/ADR.md`.
+Use the ADR template in `skills/spec-first-sdlc/templates/ADR.md` (installed as `docs/decisions/ADR-template.md`).
 
 ### 3. Specify
 
@@ -55,7 +61,7 @@ A PRD must include:
 - Out-of-scope items
 - Open questions
 
-Use the PRD template in `templates/PRD.md`.
+Use the PRD template in `skills/spec-first-sdlc/templates/PRD.md` (installed as `docs/prd/PRD-template.md`).
 
 ### 4. Implement
 
