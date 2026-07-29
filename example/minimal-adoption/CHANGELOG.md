@@ -1,11 +1,14 @@
 # Changelog
 
-All notable changes to this project are documented here. Hand-maintained.
+All notable changes to this project are documented here. Entries under `Unreleased`
+are ISO-dated, concise, newest first, and linked to a durable record.
 
 ## [Unreleased]
 
 ### Added
-- `tags` field on notes and the storage migration for it (tagging in progress).
+
+- `2026-07-15` **Note tagging entered development.** Notes accept a `tags` field and
+  the storage migration is ready for review. ([PR #12](https://github.com/example/notes/pull/12))
 
 ### Changed
 
@@ -13,7 +16,10 @@ All notable changes to this project are documented here. Hand-maintained.
 
 ### Security
 
+### Known issues
+
 ## [0.1.0] - 2026-07-10
 
 ### Added
+
 - Initial release: `create`, `list`, and `search` commands with SQLite storage.

@@ -19,7 +19,7 @@ A process for building software with AI agents. It is language-agnostic, tool-ag
 - `CLAUDE.md` — a one-line `@AGENTS.md` import so Claude Code (which does not read
   `AGENTS.md` natively) loads the same rules.
 - `HANDOFF.md` — living status document so the next session knows where to start.
-- `CHANGELOG.md` — user-visible changes, hand-maintained.
+- `CHANGELOG.md` — ISO-dated, concise user-visible changes, hand-maintained.
 - `docs/decisions/` — architecture/product/design decision records (ADRs).
 - `docs/prd/` or `docs/specs/` — product requirements documents.
 - `TESTING.md` — test policy and requirements.
@@ -86,16 +86,58 @@ Every change is reviewed through a pull request. The PR description must use the
 - Summary of what and why.
 - Verification steps actually performed.
 - Context checklist completed (AGENTS/CLAUDE, ADRs, CHANGELOG).
+- A dated changelog entry in the one matching category, or an explicit reason it
+  is not applicable.
 
 Adversarial review is strongly encouraged: ask another agent or human to check for drift, missing tests, and unintended consequences.
 
-### 7. Hand off
+### 7. Hand off before merge
 
-After merge, update:
+In the same pull request, before approval:
 
-- `CHANGELOG.md` under the Unreleased section.
-- `HANDOFF.md` with the new state, next priorities, and any blockers.
-- Any PRDs or ADRs that are now superseded or complete.
+- Add the dated, concise `CHANGELOG.md` entry under `Unreleased`.
+- Update `HANDOFF.md` to the anticipated post-merge state, next priorities, and
+  blockers.
+- Update any PRDs or ADRs that will become superseded or complete.
+
+If the merge date changes, the reviewer or author corrects the changelog date
+before approval. Do not create an unreviewed after-merge documentation gap.
+
+## Changelog contract
+
+`CHANGELOG.md` is a release index, not a session transcript. Its job is to let a
+reader quickly determine what changed, when it changed, and where the durable
+detail lives.
+
+Use one heading for each category under `Unreleased`. Allowed categories are
+`Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`, and
+`Known issues`. Omit unused headings if the project prefers, but never repeat a
+category.
+
+Every Unreleased entry uses this shape:
+
+```markdown
+- `YYYY-MM-DD` **Short outcome.** User-visible effect and one essential constraint.
+  ([PR #123](https://github.com/OWNER/REPO/pull/123))
+```
+
+Rules:
+
+- Use a valid ISO date and sort entries newest first within the category.
+- Describe one logical outcome in no more than 100 words and three sentences.
+- Wrap lines at 120 characters or fewer.
+- Link a PR, issue, ADR, or equivalent durable record.
+- Put root-cause analysis and exact verification in the PR; settled tradeoffs in
+  ADRs; current priorities and blockers in `HANDOFF.md`; unresolved work in
+  issues.
+- A production defect may be listed under `Known issues`, but it cannot appear
+  under `Fixed` until the fix lands.
+- On release, use `## [VERSION] - YYYY-MM-DD`; the release heading supplies the
+  date for entries moved out of `Unreleased`.
+
+Adopted projects run `node scripts/check-changelog.mjs CHANGELOG.md`. The checker
+enforces the mechanical contract; reviewers remain responsible for clarity and
+truth.
 
 ## Gates
 
@@ -105,7 +147,8 @@ A change may not be merged until it passes:
 2. **Spec gate** — PRD written or not needed.
 3. **Test gate** — test suite passes; new behavior is covered.
 4. **Review gate** — PR approved and context checklist complete.
-5. **Handoff gate** — CHANGELOG and HANDOFF updated.
+5. **Handoff gate** — dated concise CHANGELOG entry and anticipated post-merge
+   HANDOFF state are present in the PR.
 
 ## Roles
 
@@ -120,3 +163,4 @@ A change may not be merged until it passes:
 - Never silently rewrite previously accepted decisions without a superseding ADR.
 - Never skip the test suite or claim verification that was not performed.
 - Never leave a session without updating `HANDOFF.md`.
+- Never turn `CHANGELOG.md` into an implementation narrative or test transcript.

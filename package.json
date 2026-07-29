@@ -9,6 +9,10 @@
     "type": "git",
     "url": "git+https://github.com/eiwe/sfc-sdlc.git"
   },
+  "scripts": {
+    "check:changelog": "node skills/adopt/templates/scripts/check-changelog.mjs skills/adopt/templates/CHANGELOG.md && node skills/adopt/templates/scripts/check-changelog.mjs example/minimal-adoption/CHANGELOG.md",
+    "test": "node --test"
+  },
   "keywords": [
     "pi-package",
     "pi-coding-agent",

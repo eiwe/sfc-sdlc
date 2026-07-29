@@ -100,7 +100,8 @@ is governed automatically **even with no plugin installed at all**.
 2. From inside the target repo, run `/sdlc:adopt` (Claude Code) or `/skill:adopt`
    (Pi) — or just ask for it in natural language.
 3. It scaffolds `AGENTS.md`, `CLAUDE.md`, `HANDOFF.md`, `CHANGELOG.md`, `TESTING.md`,
-   `docs/decisions/`, `docs/prd/`, the PR template, CI, and the hooks.
+   `docs/decisions/`, `docs/prd/`, the PR template, CI, hooks, and the dependency-free
+   changelog checker.
 4. Fill in the real project commands in `AGENTS.md`, then **commit** the files.
 5. Enable the GitHub hard gates (branch protection) per [`docs/GITHUB_WORKFLOW.md`](docs/GITHUB_WORKFLOW.md).
 
@@ -114,6 +115,7 @@ After that it is automatic — you never invoke `adopt` again in that repo.
 package.json                       Pi package manifest (+ npm metadata)
 skills/adopt/SKILL.md              The dual-compatible bootstrap skill (/sdlc:adopt)
 skills/adopt/templates/            What the skill installs into a target project
+skills/adopt/templates/scripts/    Dependency-free changelog format checker
 docs/SDLC.md                       The methodology in full
 docs/GITHUB_WORKFLOW.md            Prescriptive GitHub workflow + hard-gate setup
 docs/COMPATIBILITY.md             How this maps to Claude Code and Pi
@@ -128,7 +130,7 @@ example/minimal-adoption/          A populated example of an adopted repo
 | `CLAUDE.md` | One-line `@AGENTS.md` bridge for Claude Code | Team |
 | `docs/prd/` | What we are building and why (PRDs) | Product owner / human |
 | `docs/decisions/` | Significant architecture/product/design decisions (ADRs) | Team |
-| `CHANGELOG.md` | User-visible changes per release | Team |
+| `CHANGELOG.md` | ISO-dated, concise user-visible changes per release | Team |
 | `HANDOFF.md` | Living status for the next session | Last agent to work |
 | `.github/pull_request_template.md` | Required review checklist | Process |
 | `TESTING.md` | Test policy and requirements | Team |

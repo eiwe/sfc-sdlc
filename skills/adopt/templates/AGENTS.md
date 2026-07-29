@@ -42,7 +42,8 @@ Before writing or changing anything:
 2. **Spec gate** — non-trivial change has a PRD in `docs/prd/`, or is explicitly not needed.
 3. **Test gate** — the test suite passes and new behavior/bug fixes are covered (see `TESTING.md`).
 4. **Review gate** — PR opened with the template; context checklist complete; adversarial review for non-trivial changes.
-5. **Handoff gate** — `CHANGELOG.md` (Unreleased) and `HANDOFF.md` updated.
+5. **Handoff gate** — dated concise `CHANGELOG.md` entry and anticipated post-merge
+   `HANDOFF.md` state are in the PR before merge.
 
 ## Hard rules
 
@@ -51,6 +52,8 @@ Before writing or changing anything:
 - Never commit secrets, tokens, or machine-specific paths.
 - Never write to production systems, or push directly to the default branch, without explicit human confirmation.
 - Never end a session without updating `HANDOFF.md`.
+- Never use `CHANGELOG.md` as a session transcript. Keep one ISO-dated outcome per
+  entry, no more than 100 words, and link the durable PR, issue, or ADR.
 
 ## Significant means (write an ADR)
 
@@ -72,7 +75,7 @@ Before writing or changing anything:
 
 - Decisions (ADRs): `docs/decisions/`
 - Product requirements (PRDs): `docs/prd/`
-- Release log: `CHANGELOG.md`
+- Release log: `CHANGELOG.md` (validated by `node scripts/check-changelog.mjs CHANGELOG.md`)
 - Handoff / living status: `HANDOFF.md`
 - Test policy: `TESTING.md`
 - Enforcement: `.github/workflows/ci.yml`, branch protection, `.claude/settings.json`
