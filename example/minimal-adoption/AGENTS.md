@@ -33,7 +33,8 @@ locally and supports create, list, search, and (in progress) tagging.
 2. **Spec gate** — non-trivial change has a PRD in `docs/prd/`, or is not needed.
 3. **Test gate** — `pytest -q` passes; new behavior/bug fixes covered.
 4. **Review gate** — PR opened with the template; context checklist complete.
-5. **Handoff gate** — `CHANGELOG.md` (Unreleased) and `HANDOFF.md` updated.
+5. **Handoff gate** — dated concise `CHANGELOG.md` entry and anticipated post-merge
+   `HANDOFF.md` state are in the PR.
 
 ## Hard rules
 
@@ -42,6 +43,8 @@ locally and supports create, list, search, and (in progress) tagging.
 - Never commit secrets, tokens, or machine-specific paths.
 - Never write to production systems, or push directly to `main`, without explicit human confirmation.
 - Never end a session without updating `HANDOFF.md`.
+- Never use `CHANGELOG.md` as a session transcript. Keep one dated outcome per entry
+  and link the PR, issue, or ADR.
 
 ## Architecture
 
@@ -59,5 +62,6 @@ locally and supports create, list, search, and (in progress) tagging.
 
 - Decisions (ADRs): `docs/decisions/`
 - Product requirements (PRDs): `docs/prd/`
-- Release log: `CHANGELOG.md` · Handoff: `HANDOFF.md` · Test policy: `TESTING.md`
+- Release log: `CHANGELOG.md` (run `node scripts/check-changelog.mjs CHANGELOG.md`)
+- Handoff: `HANDOFF.md` · Test policy: `TESTING.md`
 - Enforcement: `.github/workflows/ci.yml`, branch protection, `.claude/settings.json`

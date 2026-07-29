@@ -33,11 +33,14 @@ Must use the project pull request template. At minimum it must contain:
 - **Summary:** what changed and why.
 - **Verification:** the exact commands or checks run, and their results. "It compiles" is not enough.
 - **Context checklist:** confirming AGENTS.md/CLAUDE.md, ADRs, and CHANGELOG were considered.
+- **Handoff evidence:** a dated concise changelog entry and anticipated post-merge
+  handoff state, or explicit N/A reasons.
 
 ### Required checks
 
 - Test suite passes.
 - Static checks pass (lint, type check, compile) if configured.
+- `node scripts/check-changelog.mjs CHANGELOG.md` passes.
 - Secret scan passes if configured.
 - At least one review approval.
 
@@ -45,7 +48,8 @@ Must use the project pull request template. At minimum it must contain:
 
 1. Author opens PR and fills the template.
 2. Author verifies the branch locally or via CI.
-3. Reviewer reads the PR, the linked PRD/ADR, and the relevant code.
+3. Reviewer reads the PR, the linked PRD/ADR, the relevant code, and the dated
+   changelog entry.
 4. Reviewer may request changes or approve.
 5. On approval, author squashes or merges according to project convention.
 
@@ -88,7 +92,9 @@ branch protection is the real gate. Override an approved push with
 
 ## Releases
 
-- Maintain `CHANGELOG.md` under an Unreleased section during development.
+- Maintain one set of Keep a Changelog categories under `Unreleased` during
+  development. Every entry is ISO-dated, concise, newest first in its category,
+  and linked to a durable record; see `SDLC.md` for the full contract.
 - When releasing, add a version and date header above the accumulated changes.
 - Tag the release commit: `git tag -a v1.2.3 -m "Release 1.2.3"`.
 

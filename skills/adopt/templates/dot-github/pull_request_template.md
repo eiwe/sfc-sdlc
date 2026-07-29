@@ -14,5 +14,5 @@
 - [ ] Relevant existing ADRs/PRDs were considered.
 - [ ] Non-trivial feature — PRD in `docs/prd/` added or updated.
 - [ ] Tests added or updated for new behavior and bug fixes (test gate).
-- [ ] User-visible changes noted in `CHANGELOG.md` (Unreleased).
-- [ ] `HANDOFF.md` updated if this changes the next session's priorities or blockers.
+- [ ] Dated, concise `CHANGELOG.md` entry added under the one matching Unreleased category, or N/A explained.
+- [ ] `HANDOFF.md` updated with the anticipated post-merge state, priorities, and blockers, or N/A explained.

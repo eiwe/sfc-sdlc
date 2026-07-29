@@ -49,6 +49,8 @@ Do this when the user asks to start / adopt / set up the SDLC. Locate the bundle
    - `templates/dot-claude/settings.json` → `.claude/settings.json` (Claude Code SessionStart reminder + PreToolUse push-guard).
    - `templates/dot-claude/hooks/guard-push.mjs` → `.claude/hooks/guard-push.mjs` (cross-platform Node push-guard).
    - `templates/dot-claude/hooks/session-reminder.mjs` → `.claude/hooks/session-reminder.mjs` (cross-platform Node reminder printer).
+   - `templates/scripts/check-changelog.mjs` → `scripts/check-changelog.mjs`
+     (dependency-free dated/concise changelog gate).
 5. **Fill in project specifics** in `AGENTS.md`: the one-paragraph project summary, the exact build/test/lint commands, architecture notes, and the default branch name.
 6. **Write the initial `HANDOFF.md`** describing the project's current state and the first priority.
 7. **Commit the scaffolded files** (`AGENTS.md`, `CLAUDE.md`, `HANDOFF.md`, `CHANGELOG.md`, `TESTING.md`, `docs/`, `.github/`, `.claude/`). Committing is what makes the SDLC automatic and portable: every future session — for the user, for teammates, and in both Claude Code and Pi — auto-loads these with no skill invocation, even after context compaction.
@@ -74,7 +76,8 @@ If the repo already has `AGENTS.md`, do not re-adopt. Instead:
 4. **Implement:** short-lived branch off the default branch; conventional commits; tests for new behavior and fixed bugs.
 5. **Verify:** run the test suite and static checks; do live verification where applicable; update affected docs.
 6. **Review:** open a PR using the template; adversarial review for non-trivial changes.
-7. **Hand off:** update `CHANGELOG.md` (Unreleased) and `HANDOFF.md`.
+7. **Hand off before merge:** add the dated concise `CHANGELOG.md` entry and update
+   `HANDOFF.md` to the anticipated post-merge state in the same PR.
 
 ## Gates (a change may not merge until all pass)
 
@@ -82,7 +85,8 @@ If the repo already has `AGENTS.md`, do not re-adopt. Instead:
 2. **Spec gate** — PRD written or explicitly not needed.
 3. **Test gate** — suite passes; new behavior covered.
 4. **Review gate** — PR approved; context checklist complete.
-5. **Handoff gate** — CHANGELOG and HANDOFF updated.
+5. **Handoff gate** — dated concise CHANGELOG entry and anticipated post-merge
+   HANDOFF state are in the PR.
 
 ## Hard rules
 
@@ -91,6 +95,8 @@ If the repo already has `AGENTS.md`, do not re-adopt. Instead:
 - Never commit secrets, tokens, or machine-specific paths.
 - Never write to production systems without explicit human confirmation.
 - Never end a session without updating `HANDOFF.md`.
+- Never use the changelog as a session transcript: one ISO-dated logical outcome,
+  no more than 100 words, with a durable PR, issue, or ADR reference.
 
 These same rules ship in the installed `AGENTS.md` so they stay in context in every
 session of both Claude Code and Pi, even after compaction — this skill body does not.

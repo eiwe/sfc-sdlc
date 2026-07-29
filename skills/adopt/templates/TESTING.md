@@ -23,10 +23,18 @@ bug may be merged without appropriate test coverage. This is the test gate.
 # pytest -q
 ```
 
+The changelog format check is always available independently of the project
+toolchain:
+
+```bash
+node scripts/check-changelog.mjs CHANGELOG.md
+```
+
 ## CI expectations
 
 - The test suite must pass before merge (enforced by CI + branch protection).
 - New code should not reduce overall coverage without justification.
+- The changelog checker must pass even for documentation-only changes.
 
 ## What does not need tests
 

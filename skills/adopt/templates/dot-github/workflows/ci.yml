@@ -14,6 +14,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Validate changelog format
+        run: node scripts/check-changelog.mjs CHANGELOG.md
+
       # --- Replace the steps below with your real toolchain setup and commands ---
       - name: Set up toolchain
         run: echo "TODO: set up language/runtime (e.g. actions/setup-node, setup-python)"
