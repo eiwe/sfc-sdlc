@@ -1,4 +1,4 @@
-# PRD: Dated, concise changelogs
+# Spec: Dated, concise changelogs
 
 - **Status:** Approved
 - **Date:** 2026-07-29

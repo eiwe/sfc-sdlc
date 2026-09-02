@@ -14,7 +14,10 @@ artifact work in both:
 | Skill name rules | ≤64 chars, lowercase/digits/hyphens | ≤64 chars, lowercase/digits/hyphens | `adopt` (plugin `sdlc`) |
 | Bundled skills dir | `skills/<name>/SKILL.md` at plugin root | `skills/<name>/SKILL.md` auto-discovered in a package | `skills/adopt/` |
 | Session context file | `CLAUDE.md` (not `AGENTS.md`) | `AGENTS.md` **or** `CLAUDE.md`, natively | `AGENTS.md` + `CLAUDE.md` bridge |
-| Enforcement | hooks (`.claude/settings.json`), CI | extensions, CI | GitHub branch protection + CI; CC hooks |
+| No edits before a plan | Plan mode (edit-lock until the plan is accepted) | No edit-lock mode | Committed `plan.md` before edits + plan gate (both) |
+| Review policy | `REVIEW.md` + optional Code Review / `claude-code-action` | `REVIEW.md` (read by a session/human) | `REVIEW.md` at repo root (tool-agnostic) |
+| Subagents | `.claude/agents/*.md` (`verifier`, `reviewer`) | none; run a second session/worktree or an extension | `.claude/agents/` ship; Pi uses parallel sessions |
+| Enforcement | hooks (`.claude/settings.json`), subagents, CI | extensions, CI | GitHub branch protection + CI; CC hooks |
 
 ## Persistence across sessions and compaction
 
@@ -49,16 +52,20 @@ hard gates are layered on:
   `.github/workflows/ci.yml`. This holds regardless of harness or OS. Setup steps
   are in [`GITHUB_WORKFLOW.md`](GITHUB_WORKFLOW.md).
 - **Claude Code (secondary):** `.claude/settings.json` ships a `SessionStart` hook
-  (fires on startup/resume/clear/compact) that reminds the agent to read
-  `HANDOFF.md`/`AGENTS.md`, and a `PreToolUse` hook that runs
-  `.claude/hooks/guard-push.mjs` — a cross-platform Node guard that blocks
-  `git push` to a protected branch. Both hook scripts are referenced via
-  `${CLAUDE_PROJECT_DIR}` so they resolve regardless of the working directory.
-  Override an intentional push with `SDLC_ALLOW_PUSH_MAIN=1`.
+  (`session-reminder.mjs`, fires on startup/resume/clear/compact) that reminds the agent to read
+  `HANDOFF.md` → `AGENTS.md` → the active change folder, and three cross-platform Node
+  `PreToolUse` guards: `guard-push.mjs` (blocks `git push` to a protected branch;
+  `SDLC_ALLOW_PUSH_MAIN=1` / `SDLC_PROTECTED_BRANCHES`), `guard-production.mjs` (blocks a
+  production deploy/write unless `SDLC_RELEASE_APPROVAL` is set; `SDLC_PRODUCTION_PATTERN`), and
+  `guard-tests.mjs` (blocks test-file edits while `SDLC_PROTECT_TESTS=1`; `SDLC_ALLOW_TEST_EDIT=1`
+  / `SDLC_TEST_PATTERN`). The `verifier` and `reviewer` subagents in `.claude/agents/` are also
+  Claude Code only. All hook scripts are referenced via `${CLAUDE_PROJECT_DIR}` so they resolve
+  regardless of the working directory.
 - **Pi (secondary):** the always-loaded `AGENTS.md` carries the same rules into
-  the system prompt. Pi extensions (TypeScript) can add active guards; this repo
-  does not ship one, deferring hard enforcement to GitHub, to keep the package
-  code-free and portable.
+  the system prompt, and `REVIEW.md` is read the same way. Pi has no `.claude/hooks` or
+  `.claude/agents` equivalent that ships here: run the verifier/reviewer work as a second session
+  or in a worktree, and rely on GitHub for hard enforcement. Pi extensions (TypeScript) can add
+  active guards; this repo does not ship one, keeping the package code-free and portable.
 
 ## Install-role matrix
 
@@ -94,3 +101,6 @@ plugins-reference, plugin-marketplaces, memory, hooks, context-window),
 pi.dev/docs and github.com/earendil-works/pi (README, docs/skills.md,
 extensions.md, packages.md, prompt-templates.md, compaction.md, session-format.md),
 and agents.md.
+
+The AI-Native SDLC Playbook (claude.com/blog/the-ai-native-sdlc-playbook,
+published 2026-08-21) verified 2026-09-02; see [`PLAYBOOK_ALIGNMENT.md`](PLAYBOOK_ALIGNMENT.md).

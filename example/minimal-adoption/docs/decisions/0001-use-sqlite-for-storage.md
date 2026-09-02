@@ -37,4 +37,4 @@ When working in this area:
 ## Links
 
 - Supersedes: none.
-- Related: `docs/prd/tagging.md`.
+- Related: `docs/changes/tagging/spec.md`.

@@ -1,7 +1,7 @@
 {
   "name": "sfc-sdlc",
   "version": "0.1.0",
-  "description": "Spec-First Collaborative SDLC — a document-driven workflow installable as a skill or package in the Pi coding harness and as a plugin/skill in Claude Code.",
+  "description": "Spec-First Collaborative SDLC — a document-driven workflow (intent/spec/plan artifact chain, ADRs, review policy, and enforced gates) aligned with Anthropic's AI-Native SDLC Playbook, installable as a skill or package in the Pi coding harness and as a plugin/skill in Claude Code.",
   "license": "MIT",
   "author": "Eiwe",
   "homepage": "https://github.com/eiwe/sfc-sdlc",
@@ -20,6 +20,8 @@
     "agents-md",
     "sdlc",
     "spec-first",
+    "ai-native-sdlc",
+    "playbook",
     "skill"
   ]
 }

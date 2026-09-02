@@ -6,7 +6,8 @@
  * after context compaction. Node (not shell echo) for cross-platform output.
  */
 process.stdout.write(
-  "Spec-First SDLC: read HANDOFF.md then AGENTS.md before acting; " +
-    "honor the decision/spec/test/review/handoff gates; " +
-    "update HANDOFF.md before ending the session."
+  "Spec-First SDLC: read HANDOFF.md, then AGENTS.md, then the active change's " +
+    "docs/changes/<slug>/ (intent.md, spec.md, plan.md) before acting. " +
+    "No code before an approved plan.md. Verify with the project's commands and " +
+    "paste the output. Update HANDOFF.md before ending the session."
 );
