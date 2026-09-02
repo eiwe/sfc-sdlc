@@ -100,8 +100,9 @@ is governed automatically **even with no plugin installed at all**.
 2. From inside the target repo, run `/sdlc:adopt` (Claude Code) or `/skill:adopt`
    (Pi) — or just ask for it in natural language.
 3. It scaffolds `AGENTS.md`, `CLAUDE.md`, `HANDOFF.md`, `CHANGELOG.md`, `TESTING.md`,
-   `docs/decisions/`, `docs/prd/`, the PR template, CI, hooks, and the dependency-free
-   changelog checker.
+   `REVIEW.md`, `docs/decisions/`, `docs/changes/_template/` (the `intent.md`/`spec.md`/`plan.md`
+   chain), the PR template, `.github/CODEOWNERS`, CI, the `.claude/` hooks and subagents, and the
+   dependency-free changelog checker.
 4. Fill in the real project commands in `AGENTS.md`, then **commit** the files.
 5. Enable the GitHub hard gates (branch protection) per [`docs/GITHUB_WORKFLOW.md`](docs/GITHUB_WORKFLOW.md).
 
@@ -117,8 +118,11 @@ skills/adopt/SKILL.md              The dual-compatible bootstrap skill (/sdlc:ad
 skills/adopt/templates/            What the skill installs into a target project
 skills/adopt/templates/scripts/    Dependency-free changelog format checker
 docs/SDLC.md                       The methodology in full
+docs/PLAYBOOK_ALIGNMENT.md         Play-by-play mapping to Anthropic's AI-Native SDLC Playbook
 docs/GITHUB_WORKFLOW.md            Prescriptive GitHub workflow + hard-gate setup
 docs/COMPATIBILITY.md             How this maps to Claude Code and Pi
+docs/decisions/                    ADRs for this repo's own decisions
+docs/changes/                      This repo's own intent/spec/plan change chain
 example/minimal-adoption/          A populated example of an adopted repo
 ```
 
@@ -128,12 +132,32 @@ example/minimal-adoption/          A populated example of an adopted repo
 | --- | --- | --- |
 | `AGENTS.md` | Universal rules, read first every session (source of truth) | Team |
 | `CLAUDE.md` | One-line `@AGENTS.md` bridge for Claude Code | Team |
-| `docs/prd/` | What we are building and why (PRDs) | Product owner / human |
+| `docs/changes/<slug>/intent.md` | Problem and desired outcome, in the originator's words | Product owner / human |
+| `docs/changes/<slug>/spec.md` | Requirements and design (replaces the old PRD) | Product owner / human |
+| `docs/changes/<slug>/plan.md` | Approved implementation plan before code | Engineer / tech lead |
 | `docs/decisions/` | Significant architecture/product/design decisions (ADRs) | Team |
+| `REVIEW.md` | Review policy: passes, Important vs Nit, do-not-report | Tech lead |
 | `CHANGELOG.md` | ISO-dated, concise user-visible changes per release | Team |
 | `HANDOFF.md` | Living status for the next session | Last agent to work |
 | `.github/pull_request_template.md` | Required review checklist | Process |
-| `TESTING.md` | Test policy and requirements | Team |
+| `.github/CODEOWNERS` | Routes agent-configuration files to code-owner review | Process |
+| `.claude/agents/` | `verifier` and `reviewer` subagents (Claude Code only) | Team |
+| `TESTING.md` | Test policy and the verification feedback loop | Team |
+
+## Alignment with Anthropic's AI-Native SDLC Playbook
+
+This SDLC is a tool-agnostic implementation of Anthropic's
+[AI-Native SDLC Playbook](https://claude.com/blog/the-ai-native-sdlc-playbook) (published
+2026-08-21). It follows the playbook's six-stage loop (Plan → Design → Build → Test → Deploy →
+Maintain) and its committed-artifact chain — `intent.md` → `spec.md` → `plan.md` → the diff and
+its tests → a PR with review findings → an incident record — where each stage ends by committing
+an artifact the next stage reads. It keeps the playbook's control model: skills advise, hooks and
+CI enforce, humans decide at the gates, and the agent acts up to the production boundary and never
+past it. On top of that it adds `AGENTS.md` as a cross-harness source of truth (Claude Code and
+Pi), ADRs, `HANDOFF.md` with a handoff gate, and the dated changelog contract. The Anthropic-hosted
+and managed-settings plays (Claude Security, Claude Tag, managed permissions, continuous evals) are
+documented as adopter-enabled rather than shipped. See
+[`docs/PLAYBOOK_ALIGNMENT.md`](docs/PLAYBOOK_ALIGNMENT.md) for the play-by-play mapping.
 
 ## License
 

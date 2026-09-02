@@ -1,0 +1,15 @@
+# CODEOWNERS — Spec-First SDLC
+#
+# Agent configuration is code. The files that steer agents (AGENTS.md, CLAUDE.md,
+# REVIEW.md, the .claude/ hooks and subagents), the decision record, and the
+# enforcement config change only through a PR that a named code owner approves.
+#
+# Replace @OWNER with a real GitHub user or team. Enable "Require review from Code
+# Owners" in branch protection so these paths cannot merge without that approval.
+
+AGENTS.md           @OWNER
+CLAUDE.md           @OWNER
+REVIEW.md           @OWNER
+/.claude/           @OWNER
+/docs/decisions/    @OWNER
+/.github/           @OWNER

@@ -7,13 +7,14 @@
 
 ## Current priorities
 
-1. Finish the `notekeep tag` command (see `docs/prd/tagging.md`).
-2. Add search-by-tag once tagging lands.
+1. Finish the `notekeep tag` command (see `docs/changes/tagging/`: intent, spec, plan).
+2. Add search-by-tag once tagging lands (needs its own intent).
 
 ## Active workstreams
 
-- **Tagging** — `models.Note` now has a `tags` field and the migration is done.
-  Remaining: the `tag add/remove/list` subcommands in `cli.py` and their tests.
+- **Tagging** — plan approved (`docs/changes/tagging/plan.md`). `models.Note` now has a
+  `tags` field and the `note_tags` migration is done. Remaining: the `tag add/remove/list`
+  subcommands in `cli.py` and their tests (`tests/test_cli_tag.py`).
   Resume in `notekeep/cli.py` at the `# TODO: tag subcommand` marker.
 
 ## Blockers
@@ -26,14 +27,15 @@
 
 ## Known issues
 
-- `search` is case-sensitive; acceptable for now, noted for a future PRD.
+- `search` is case-sensitive; acceptable for now, noted for a future change (its own intent).
 
 ## How to resume
 
 1. `pip install -e . && pytest -q` to confirm green.
-2. Implement the `tag` subcommand against the acceptance criteria in `docs/prd/tagging.md`.
+2. Implement the `tag` subcommand against `docs/changes/tagging/plan.md` and the
+   acceptance criteria in `docs/changes/tagging/spec.md`.
 
 ## Key references
 
-- `docs/prd/tagging.md` — the feature being built.
+- `docs/changes/tagging/` — intent, spec, and plan for the feature being built.
 - `docs/decisions/0001-use-sqlite-for-storage.md` — storage decision.

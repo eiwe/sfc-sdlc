@@ -43,3 +43,34 @@ jobs:
           # Required for organization-owned repos (free for personal accounts).
           # Add the secret, then uncomment:
           # GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }}
+
+# --- Optional: agent-evals (regression-test the agent's configuration) ---------------
+# Agent configuration is code. When the files that steer agents change, run the eval
+# suite so a prompt/skill/hook change cannot quietly drop the agent's quality.
+# This job is OPTIONAL and commented out: it needs an ANTHROPIC_API_KEY secret and a
+# budget for eval runs, plus an evals/ suite (see docs/PLAYBOOK_ALIGNMENT.md). Enable
+# it by adding the secret, writing evals/*.json, and uncommenting the block.
+#
+#  agent-evals:
+#    runs-on: ubuntu-latest
+#    # Only when agent-steering configuration changes.
+#    if: github.event_name == 'pull_request'
+#    steps:
+#      - uses: actions/checkout@v4
+#      - run: npm install -g @anthropic-ai/claude-code
+#      - name: Run eval suite
+#        env:
+#          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+#        run: |
+#          for eval in evals/*.json; do
+#            claude -p "$(jq -r '.prompt' "$eval")" \
+#              --allowedTools "Read,Edit,Bash(make test)" \
+#              --output-format json > result.json
+#            ./evals/check.sh "$eval" result.json
+#          done
+#
+# To scope this job to configuration changes only, add a paths filter to the workflow
+# trigger at the top of this file:
+#   on:
+#     pull_request:
+#       paths: ['AGENTS.md', 'CLAUDE.md', 'REVIEW.md', '.claude/**']

@@ -1,18 +1,19 @@
 ## Summary
 
-<!-- What changed and why. Reference issues and the PRD/ADR this implements. -->
+<!-- What changed and why. Link the change folder and any ADR this implements. -->
 
 ## Verification
 
-<!-- What was actually run: tests, lint, type-check, manual/live checks, with results. "It compiles" is not enough. -->
+<!-- Paste what was actually run: build, tests, lint/type-check, manual/live checks, with results.
+     "It compiles" is not verification. -->
 
-## Context checklist
+## Gate checklist
 
-- [ ] Touched documented conventions — `AGENTS.md` / `CLAUDE.md` updated if needed.
-- [ ] Significant architecture/product/design decision — ADR added under `docs/decisions/`.
-- [ ] Changes a previous decision — superseding ADR added (cites the superseded ID).
-- [ ] Relevant existing ADRs/PRDs were considered.
-- [ ] Non-trivial feature — PRD in `docs/prd/` added or updated.
-- [ ] Tests added or updated for new behavior and bug fixes (test gate).
-- [ ] Dated, concise `CHANGELOG.md` entry added under the one matching Unreleased category, or N/A explained.
-- [ ] `HANDOFF.md` updated with the anticipated post-merge state, priorities, and blockers, or N/A explained.
+- [ ] **Intent** — links to `docs/changes/<slug>/intent.md` (accepted), or `trivial: not needed`.
+- [ ] **Decision** — significant decision has an ADR under `docs/decisions/` (or a superseding ADR that cites the superseded ID), or not needed.
+- [ ] **Spec** — links to `docs/changes/<slug>/spec.md` (accepted, flagged concerns resolved), or `trivial: not needed`.
+- [ ] **Plan** — links to `docs/changes/<slug>/plan.md`; the diff matches it, or `plan.md` records the deviation.
+- [ ] **Test** — verification output pasted above; tests added for new behavior and bug fixes.
+- [ ] **Review** — `REVIEW.md` passes were run (human and/or AI) and Important findings resolved.
+- [ ] **AGENTS.md** — "Things agents get wrong" updated if a mistake repeated (twice rule), or N/A.
+- [ ] **Handoff** — dated, concise `CHANGELOG.md` entry added under the matching Unreleased category, and `HANDOFF.md` updated with the anticipated post-merge state.

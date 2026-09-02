@@ -11,7 +11,7 @@
 
 ## Active workstreams
 
-<!-- What is in flight, who is doing it, and where to resume. -->
+<!-- What is in flight, its docs/changes/<slug>/ folder, who is doing it, and where to resume. -->
 
 ## Blockers
 
