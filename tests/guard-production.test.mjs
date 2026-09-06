@@ -27,12 +27,14 @@ function run(command, env = {}) {
   });
 }
 
-test("isProductionCommand needs both a deploy verb and a production marker", () => {
+test("isProductionCommand catches context-sensitive writes and explicit production operations", () => {
   assert.ok(isProductionCommand("helm upgrade app --namespace production"));
   assert.ok(isProductionCommand("kubectl apply -f prod.yaml on prod"));
   assert.equal(isProductionCommand("make deploy to staging"), null);
   assert.equal(isProductionCommand("echo production"), null);
   assert.equal(isProductionCommand("git apply patch.diff"), null);
+  assert.ok(isProductionCommand("terraform apply"));
+  assert.ok(isProductionCommand("kubectl apply -f deploy.yaml"));
 });
 
 test("isProductionCommand honors a custom pattern source", () => {
@@ -46,9 +48,9 @@ test("e2e: production command is blocked without approval and names the override
   assert.match(result.stderr, /SDLC_RELEASE_APPROVAL/);
 });
 
-test("e2e: SDLC_RELEASE_APPROVAL allows the production command", () => {
+test("e2e: exact expiring SDLC_RELEASE_APPROVAL acknowledges only its operation", () => {
   const result = run("kubectl apply -f deploy.yaml --context production", {
-    SDLC_RELEASE_APPROVAL: "CHG-4821",
+    SDLC_RELEASE_APPROVAL: JSON.stringify({ command: "kubectl apply -f deploy.yaml --context production", cwd: process.cwd(), expires: new Date(Date.now() + 60000).toISOString(), reference: "CHG-4821" }),
   });
   assert.equal(result.status, 0);
 });
@@ -69,11 +71,12 @@ test("e2e: SDLC_PRODUCTION_PATTERN overrides detection", () => {
   assert.equal(allowed.status, 0);
 });
 
-test("e2e: malformed stdin fails open", () => {
+test("e2e: malformed stdin blocks visibly instead of silently bypassing protection", () => {
   const result = spawnSync(process.execPath, [HOOK], {
     input: "not json{",
     env: cleanEnv(),
     encoding: "utf8",
   });
-  assert.equal(result.status, 0);
+  assert.equal(result.status, 2);
+  assert.match(result.stderr, /payload error/);
 });

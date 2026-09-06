@@ -1,0 +1,9 @@
+{
+  "type": "object",
+  "properties": {
+    "decision": { "type": "string", "enum": ["advance", "revise", "escalate"] },
+    "summary": { "type": "string" }
+  },
+  "required": ["decision", "summary"],
+  "additionalProperties": false
+}

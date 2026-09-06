@@ -71,11 +71,12 @@ test("e2e: SDLC_ALLOW_TEST_EDIT=1 allows the test edit", () => {
   assert.equal(result.status, 0);
 });
 
-test("e2e: malformed stdin fails open", () => {
+test("e2e: malformed stdin blocks visibly instead of silently bypassing protection", () => {
   const result = spawnSync(process.execPath, [HOOK], {
     input: "not json{",
     env: cleanEnv({ SDLC_PROTECT_TESTS: "1" }),
     encoding: "utf8",
   });
-  assert.equal(result.status, 0);
+  assert.equal(result.status, 2);
+  assert.match(result.stderr, /payload error/);
 });

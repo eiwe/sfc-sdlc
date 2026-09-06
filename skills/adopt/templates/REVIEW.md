@@ -1,36 +1,32 @@
-# Review instructions
+# Review policy
 
-The review policy for this repo. Applied to every PR by human reviewers, by the
-`reviewer` subagent (`.claude/agents/reviewer.md`, Claude Code), and by AI review
-(Claude Code Code Review or `claude-code-action`) where enabled. Findings inform the
-decision but do not approve or block on their own — a human code owner approves through
-branch protection.
+An independent reviewer evaluates the submitted revision and reports findings.
+Read `AGENTS.md`, the active intent/spec/plan, relevant ADRs and verification
+evidence. The controller owns the gate decision record; Markdown status and model
+agreement are not proof. Reviewers do not change the submission or approve their
+own implementation. Follow `ROLES.md` and `WORKFLOW.md` for role and trust boundaries.
 
 ## Passes
 
-Run these passes over the diff (`git diff <default-branch>...HEAD`) and tag each
-finding with its pass:
+- **Correctness:** requirements, logic, edge cases, regression risk and neighboring flows.
+- **Security:** permissions, untrusted inputs, credentials, data exposure and control bypasses.
+- **Compliance:** accepted scope, plan deviations, significant ADRs, test evidence,
+  production boundaries and accurate user-facing compatibility claims.
 
-- **Bugs** — logic errors, broken edge cases, subtle regressions.
-- **Security** — injection risks, authentication/authorization gaps, PII in logs, secrets in the diff.
-- **Compliance** — the diff matches `spec.md`, `plan.md`, the relevant ADRs, and `AGENTS.md`.
-  Flag any deviation from `plan.md` that `plan.md` does not record, and flag when the change
-  makes `AGENTS.md` stale.
+Reserve **Important** for behavior, security or policy failures. Give each finding
+a concrete trigger, consequence and file/reference. Resolve Important findings
+before advancing. Report at most five **Nits**; summarize additional nits by count.
+Do not repeat purely mechanical formatting findings already enforced by CI.
 
-## What Important means here
+For planning gates, test the artifact against its accepted inputs and challenge
+missing acceptance criteria, authority assumptions and unbounded work. Return
+`advance`, `revise` with actionable findings, or `escalate` with the named policy
+condition and decision needed. A routine revision belongs with the producing agent.
 
-Reserve **Important** for findings that would break behavior, leak data, or breach a
-policy. Style, naming, and preference are **Nits**.
+For bug fixes, examine the failing regression commit and final test changes,
+including deletions, moves and shell-written edits. A corrected invalid test needs
+independent acceptance and renewed failing evidence, not an unexplained override.
 
-## Cap the nits
-
-Report at most five nits per review; summarize the rest as a count.
-
-## Do not report
-
-Generated paths and anything CI already enforces (format, lint, the changelog check).
-
-## Fix branches
-
-On `fix/*` branches, flag any change to an existing test — a bug fix proves itself
-against the test written first, so the test must not be weakened to make it pass.
+All implementation and handoff changes precede final review. Changed inputs or a
+changed revision invalidate affected evidence. Platform policy controls whether
+an accepted agent review enables integration or needs an accountable human review.

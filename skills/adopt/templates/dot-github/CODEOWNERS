@@ -7,9 +7,21 @@
 # Replace @OWNER with a real GitHub user or team. Enable "Require review from Code
 # Owners" in branch protection so these paths cannot merge without that approval.
 
+# Default ownership covers application changes as well as workflow configuration.
+# Autonomous routine integration requires a separate trusted evidence gate; do not
+# simply remove human review requirements without installing that replacement.
+*                   @OWNER
 AGENTS.md           @OWNER
 CLAUDE.md           @OWNER
 REVIEW.md           @OWNER
 /.claude/           @OWNER
 /docs/decisions/    @OWNER
 /.github/           @OWNER
+/.agents/           @OWNER
+/.codex/            @OWNER
+/.pi/               @OWNER
+/.opencode/         @OWNER
+/.sdlc/             @OWNER
+/scripts/sdlc/      @OWNER
+/scripts/check-changelog.mjs @OWNER
+/docs/changes/      @OWNER

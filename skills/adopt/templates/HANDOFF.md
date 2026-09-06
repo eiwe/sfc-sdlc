@@ -1,34 +1,24 @@
-<!-- Living handoff document. Update at the end of every session. The next session reads this first. -->
-
 # Handoff
 
+<!-- Update after material project changes and before final review. Read-only sessions
+     do not need edits. Link durable evidence; do not paste secrets or transient credentials. -->
+
 **Last updated:** YYYY-MM-DD
-**Updated by:** [Name / agent]
+**Updated by:** [Role / run reference]
 
-## Current priorities
+## Active work
 
-<!-- What should be worked on next, in order. -->
+<!-- Change folder, accepted scope, current revision, responsible role and next step. -->
 
-## Active workstreams
+## Authorization and run status
 
-<!-- What is in flight, its docs/changes/<slug>/ folder, who is doing it, and where to resume. -->
+<!-- Durable run/approval reference, bounds still in force and named escalation if any.
+     Session or harness changes do not invalidate existing authorization. -->
 
-## Blockers
+## Priorities and known issues
 
-<!-- Anything preventing progress. -->
+<!-- What remains, concrete blockers, and relevant decisions with links. -->
 
-## Recent decisions
+## Resume
 
-<!-- ADRs or informal decisions made in the last session, with links. -->
-
-## Known issues
-
-<!-- Bugs, tech debt, or risks the next session should know about. -->
-
-## How to resume
-
-<!-- Exact first steps for the next session. -->
-
-## Key references
-
-<!-- Links to the most important documents right now. -->
+<!-- Exact next command/procedure. Complete this before final verification/review. -->

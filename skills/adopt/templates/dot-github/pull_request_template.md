@@ -12,7 +12,7 @@
 - [ ] **Intent** — links to `docs/changes/<slug>/intent.md` (accepted), or `trivial: not needed`.
 - [ ] **Decision** — significant decision has an ADR under `docs/decisions/` (or a superseding ADR that cites the superseded ID), or not needed.
 - [ ] **Spec** — links to `docs/changes/<slug>/spec.md` (accepted, flagged concerns resolved), or `trivial: not needed`.
-- [ ] **Plan** — links to `docs/changes/<slug>/plan.md`; the diff matches it, or `plan.md` records the deviation.
+- [ ] **Plan** — links to accepted `docs/changes/<slug>/plan.md`; the diff matches it or links a reviewed deviation record without rewriting frozen inputs.
 - [ ] **Test** — verification output pasted above; tests added for new behavior and bug fixes.
 - [ ] **Review** — `REVIEW.md` passes were run (human and/or AI) and Important findings resolved.
 - [ ] **AGENTS.md** — "Things agents get wrong" updated if a mistake repeated (twice rule), or N/A.

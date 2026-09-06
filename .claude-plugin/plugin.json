@@ -1,6 +1,6 @@
 {
   "name": "sdlc",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Adopt and follow the Spec-First Collaborative SDLC: a document-driven workflow aligned with Anthropic's AI-Native SDLC Playbook (AGENTS.md source of truth, an intent/spec/plan artifact chain, ADRs, REVIEW policy, HANDOFF, CHANGELOG, and enforced intent/decision/spec/plan/test/review/handoff gates plus a production boundary) that persists across sessions and compaction.",
   "author": { "name": "Eiwe" },
   "homepage": "https://github.com/eiwe/sfc-sdlc",
