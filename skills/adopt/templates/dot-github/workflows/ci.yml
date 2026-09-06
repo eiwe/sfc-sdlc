@@ -3,6 +3,9 @@
 # with this project's real ones (keep them in sync with AGENTS.md and TESTING.md).
 name: ci
 
+permissions:
+  contents: read
+
 on:
   pull_request:
   push:
@@ -12,34 +15,33 @@ jobs:
   verify:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Validate changelog format
         run: node scripts/check-changelog.mjs CHANGELOG.md
 
-      # --- Replace the steps below with your real toolchain setup and commands ---
-      - name: Set up toolchain
-        run: echo "TODO: set up language/runtime (e.g. actions/setup-node, setup-python)"
-
-      - name: Install dependencies
-        run: echo "TODO: install deps (e.g. npm ci)"
-
-      - name: Lint / type-check
-        run: echo "TODO: lint/type-check command"
-
-      - name: Test (test gate)
-        run: echo "TODO: test command — must fail the build on failure"
+      # Add your runtime and dependency setup before this step.
+      - name: Verify project
+        run: |
+          # SDLC_VERIFY_COMMAND_BEGIN
+          echo "SDLC adoption incomplete: configure the real build/test/lint command."
+          exit 1
+          # SDLC_VERIFY_COMMAND_END
 
   secret-scan:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Scan for secrets
-        uses: gitleaks/gitleaks-action@v2
+        uses: gitleaks/gitleaks-action@v3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITLEAKS_ENABLE_COMMENTS: "false"
           # Required for organization-owned repos (free for personal accounts).
           # Add the secret, then uncomment:
           # GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }}
@@ -56,7 +58,7 @@ jobs:
 #    # Only when agent-steering configuration changes.
 #    if: github.event_name == 'pull_request'
 #    steps:
-#      - uses: actions/checkout@v4
+#      - uses: actions/checkout@v6
 #      - run: npm install -g @anthropic-ai/claude-code
 #      - name: Run eval suite
 #        env:
@@ -69,8 +71,6 @@ jobs:
 #            ./evals/check.sh "$eval" result.json
 #          done
 #
-# To scope this job to configuration changes only, add a paths filter to the workflow
-# trigger at the top of this file:
-#   on:
-#     pull_request:
-#       paths: ['AGENTS.md', 'CLAUDE.md', 'REVIEW.md', '.claude/**']
+# Put selectively triggered agent evals in a SEPARATE workflow. Never path-filter
+# this required verify workflow: unrelated PRs would wait forever for its check.
+# Agent eval runners must not inherit production/integration credentials.

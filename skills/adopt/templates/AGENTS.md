@@ -1,89 +1,54 @@
-# AGENTS.md
+# Project rules
 
-Universal, tool-agnostic project rules — the single source of truth for how work
-happens here. This SDLC implements Anthropic's AI-Native SDLC Playbook.
+<!-- Fill in the project, architecture, commands and protected decisions. Keep this short. -->
 
-> **Why this file is authoritative.** Both harnesses reload it every session and after compaction:
-> - **Pi** reads `AGENTS.md` natively (injected into the system prompt every session).
-> - **Claude Code** reads `CLAUDE.md`, which imports this file via `@AGENTS.md`.
-> - Durable rules live here — not in chat and not in a skill body, which do not survive compaction.
+## Project and commands
 
-## Session start — do this every session and after every compaction
+- Project: describe its purpose and main components.
+- Verify: configure the real command; healthy output means all required checks pass.
+- Default branch: `main`.
 
-1. Read `HANDOFF.md` — what was left unfinished, blockers, current priorities.
-2. Re-read the rules below.
-3. Read the active change's `docs/changes/<slug>/` (`intent.md`, `spec.md`, `plan.md`) and the relevant ADRs.
-4. If scope is unclear, confirm with the human before acting.
+## Start and resume
 
-## Project
+Read `HANDOFF.md`, the active `docs/changes/<slug>/` artifacts and relevant ADRs.
+When a controller run exists, inspect its status using `WORKFLOW.md`. Resume the
+authorized scope; a new session, model or compaction does not erase authorization.
+Investigate uncertainties independently. Escalate a missing decision only when it
+materially changes the accepted outcome, risk or authority.
 
-<!-- One-paragraph summary of what this project does and who it is for. -->
+## Work and gates
 
-## Commands
+Keep a committed `intent.md` → `spec.md` → `plan.md` chain before implementation.
+Use brief artifacts for small tasks. An independent reviewing run accepts each
+stage under the agreed policy; a persona or an editable “approved” label cannot
+authorize work. Significant decisions need an ADR. Record scope changes and
+invalidate affected approvals before continuing.
 
-<!-- Exact commands. These must be real — agents rely on them. Show a healthy result. -->
+Implement within the approved paths. Run the verification command and independent
+`TESTING.md` and `REVIEW.md` passes against the final revision. Resolve Important
+findings; failed checks normally trigger repair within the configured budget.
+Complete changelog and handoff changes before final verification and review.
+Only the trusted integration route may merge an eligible revision.
 
-```bash
-# Build / compile:     # healthy: <what success looks like>
-# Test (test gate):    # healthy: <e.g. "N passed, 0 failed">
-# Lint / type-check:   # healthy: <e.g. "zero warnings">
-# Run locally:         # healthy: <e.g. "serving on :8080">
-```
+A manually managed trivial change may omit intent/spec/plan with a reviewer-visible
+reason. The controller always uses the brief three-artifact chain. Read-only
+investigation or review requires neither a plan nor handoff/changelog edits.
 
-- **Default branch:** `main`  <!-- or master -->
+## Boundaries
 
-## Gates — a change may not merge until all pass
+- Follow `ROLES.md` for independent author, verifier and reviewer responsibilities.
+- For bug fixes, commit a test that fails for the intended reason before fixing
+  code. Preserve that regression proof; follow the correction procedure in `TESTING.md`.
+- Escalate authority expansion, unresolved product decisions, destructive actions,
+  production operations, SDLC-control changes outside explicit authorization, and
+  exhausted budgets. Existing bounded authorization remains valid.
+- Production release authorization belongs to the accountable human and deployment
+  controls. A shell environment variable or branch rule is not release approval.
+- Never claim checks that did not run or commit secrets. See `WORKFLOW.md` for the
+  distinction between local guardrails and host-enforced controls.
+- Update durable handoff state after material project changes; keep changelog
+  entries dated, concise and linked to a durable record.
 
-1. **Intent gate** — `docs/changes/<slug>/intent.md` accepted by the product owner (or a linked tracker record), or not needed (trivial).
-2. **Decision gate** — every significant decision has an ADR in `docs/decisions/`, or not needed.
-3. **Spec gate** — `spec.md` accepted with all flagged concerns resolved, or not needed (trivial).
-4. **Plan gate** — `plan.md` approved before implementation; the merged diff matches it or `plan.md` records the deviation.
-5. **Test gate** — the suite passes in CI; new behavior and fixed bugs are covered; verification output is in the PR.
-6. **Review gate** — PR uses the template; `REVIEW.md` passes were run and Important findings resolved; a human code owner approved.
-7. **Handoff gate** — dated, concise `CHANGELOG.md` entry and anticipated post-merge `HANDOFF.md` state are in the PR.
+## Settled decisions and recurring mistakes
 
-## Production boundary
-
-The agent acts up to the production gate and never past it: any production write or deploy needs a named human authorization (`SDLC_RELEASE_APPROVAL`), enforced by `guard-production.mjs` and branch protection.
-
-## Hard rules
-
-- Never implement a non-trivial change without an accepted `intent.md`, `spec.md`, and approved `plan.md`; never change a settled design without a superseding ADR.
-- Never start editing code before the plan is approved; when the implementation departs from `plan.md`, update `plan.md` in the same commit.
-- Never skip the test gate, never claim verification that was not performed, and always paste the verification output.
-- When fixing a bug, write the failing test first and commit it; then fix the code, never the test.
-- Never commit secrets, tokens, or machine-specific paths.
-- Never deploy to or write to production, or push directly to the default branch, without a named human authorization.
-- When the same mistake is made twice, put the correction in "Things agents get wrong" below in that same PR.
-- Never end a session without updating `HANDOFF.md`.
-- Never use `CHANGELOG.md` as a session transcript — one ISO-dated outcome per entry, ≤100 words, with a durable reference.
-
-## Significant means (write an ADR)
-
-- Introduces a new dependency or runtime.
-- Changes how state is stored or shared.
-- Alters a previously accepted design.
-- Has security, privacy, or cost implications.
-- Would surprise another agent picking up the project.
-
-## Architecture
-
-<!-- Brief summary of the architecture and where key things live. -->
-
-## Do not change
-
-<!-- Settled decisions that must not be reopened without a superseding ADR. -->
-
-## Things agents get wrong
-
-<!-- When an agent makes the same mistake twice, or review flags it twice, the correction goes here in that PR. -->
-
-## Where things live
-
-- Change chain (intent/spec/plan): `docs/changes/<slug>/`
-- Decisions (ADRs): `docs/decisions/`
-- Review policy: `REVIEW.md`
-- Release log: `CHANGELOG.md` (validated by `node scripts/check-changelog.mjs CHANGELOG.md`)
-- Handoff / living status: `HANDOFF.md`
-- Test policy: `TESTING.md`
-- Enforcement: `.github/workflows/ci.yml`, `.github/CODEOWNERS`, branch protection, `.claude/settings.json`, `.claude/hooks/`
+<!-- Record protected architecture and corrections for mistakes made twice. -->

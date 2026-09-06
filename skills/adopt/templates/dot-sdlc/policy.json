@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "mode": "cooperative",
+  "runners": {
+    "planner": ["node", "scripts/sdlc/runner.mjs", "--harness", "codex"],
+    "implementer": ["node", "scripts/sdlc/runner.mjs", "--harness", "claude"],
+    "verifier": ["node", "scripts/sdlc/runner.mjs", "--harness", "pi"],
+    "reviewer": ["node", "scripts/sdlc/runner.mjs", "--harness", "opencode"]
+  },
+  "personas": {
+    "planner": "Translate accepted intent into a small, testable design. Challenge unnecessary scope.",
+    "implementer": "Implement the accepted plan, including tests, changelog and handoff before verification.",
+    "verifier": "Independently exercise acceptance criteria and neighboring behavior. Report evidence only.",
+    "reviewer": "Challenge correctness, security and policy compliance. Do not edit the submission."
+  },
+  "verify": [],
+  "allowedPaths": ["src/", "tests/", "docs/changes/", "docs/decisions/", "CHANGELOG.md", "HANDOFF.md"],
+  "protectedPaths": ["AGENTS.md", "CLAUDE.md", "ROLES.md", "REVIEW.md", "TESTING.md", "WORKFLOW.md", ".sdlc/", ".github/", ".claude/", ".codex/", ".agents/", ".pi/", ".opencode/", "scripts/"],
+  "taskKind": "change",
+  "testPaths": ["tests/"],
+  "maxAttempts": 3,
+  "maxInvocations": 40,
+  "timeoutMs": 120000,
+  "maxElapsedMs": 1800000,
+  "maxOutputBytes": 1048576,
+  "passEnv": [],
+  "verifyEnv": [],
+  "allowIntegration": false
+}

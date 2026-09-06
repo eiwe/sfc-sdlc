@@ -56,11 +56,12 @@ test("e2e: SDLC_ALLOW_PUSH_MAIN=1 allows the push", () => {
   assert.equal(result.status, 0);
 });
 
-test("e2e: malformed stdin fails open", () => {
+test("e2e: malformed stdin blocks visibly instead of silently bypassing protection", () => {
   const result = spawnSync(process.execPath, [HOOK], {
     input: "not json{",
     env: cleanEnv(),
     encoding: "utf8",
   });
-  assert.equal(result.status, 0);
+  assert.equal(result.status, 2);
+  assert.match(result.stderr, /payload error/);
 });

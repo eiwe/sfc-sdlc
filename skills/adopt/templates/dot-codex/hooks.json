@@ -1,0 +1,10 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash|apply_patch|Edit|Write",
+        "hooks": [{ "type": "command", "command": "node -e \"const p=require('node:path').join(require('node:child_process').execFileSync('git',['rev-parse','--show-toplevel'],{encoding:'utf8'}).trim(),'scripts/sdlc/hooks.mjs');import(require('node:url').pathToFileURL(p)).then(m=>m.runHook());\"" }]
+      }
+    ]
+  }
+}

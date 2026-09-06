@@ -1,31 +1,17 @@
-# Intent: [Short Title]
+# Intent: [Outcome]
 
-<!-- Save as docs/changes/<slug>/intent.md. The Plan-stage artifact: the idea in the
-     originator's own words, brainstormed with an agent, corrected by the originator,
-     and accepted by the product owner (the acceptance is the PR merge/approval that
-     adds this file, or a note here). No formal language required. -->
-
-**Author:** [Name / role]
-**Status:** Draft | Accepted | Closed
+**Author/source:** [Originator or linked task]
 **Date:** YYYY-MM-DD
-**Tracker:** [record ID / issue link, or "none"]
+**Acceptance evidence:** [Controller run or authorized review reference]
 
-## Problem
+## Problem and outcome
 
-<!-- What cannot be done today, and who feels it. -->
+<!-- Capture the originator's need, affected users and desired outcome. -->
 
-## Proposed outcome
+## Scope and constraints
 
-<!-- What "better" looks like once this ships. -->
+<!-- Allowed work, exclusions, risk/authority limits and any existing authorization. -->
 
-## Affected users and systems
+## Open decisions
 
-<!-- Who and what this touches. -->
-
-## Constraints
-
-<!-- Hard limits: no new PII, existing auth only, deadlines, budget, etc. -->
-
-## Open questions
-
-<!-- Anything still unresolved for the Design stage to answer. -->
+<!-- Resolve independently within scope; identify decisions that require escalation. -->

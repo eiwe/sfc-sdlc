@@ -1,76 +1,55 @@
-# Testing Policy
+# Testing policy
 
-A test suite is **required**. No change that introduces new behavior or fixes a
-bug may be merged without appropriate test coverage. This is the test gate.
+Configure one verification command that runs the project's required build, tests
+and static checks and exits nonzero on failure. List it in `AGENTS.md`, CI and the
+operator's controller policy. Record actual command output against the submitted
+revision. Documentation-only work needs its applicable checks; new behavior and
+bug fixes need meaningful coverage. Use synthetic data and isolated services.
 
-## The feedback loop
+## Verification
 
-Give the agent a way to check its own work before a human sees it.
+The implementer checks its work. A separate verifier exercises acceptance criteria
+and nearby affected flows without repairing the submission. The controller runs
+the deterministic command itself and captures its exit status; a model's assertion
+that tests passed cannot substitute for it. UI changes also need visual inspection.
 
-- Wrap the check in a **single command that exits non-zero on failure** (for example
-  `make test` or `npm test`). If checking the work takes a sequence of commands today,
-  wrap them in one target.
-- List that command in the **Commands** section of `AGENTS.md` with an example of its
-  **healthy output**, so the agent can judge the result without asking.
-- State a **quantifiable target** so success is unambiguous — "all tests pass", "the
-  endpoint returns 200 with the new field", "coverage does not drop".
-- For **UI work**, close the loop with a **visual check**: give the agent a screenshot or
-  browser tool and the mock, and let it implement, screenshot, compare, and adjust.
+Finish changelog/handoff edits before final verification. Changes made afterward
+require fresh affected checks and review. A failing check normally returns work
+for repair within the run budget. Missing access, unavailable required checks or
+exhausted retries escalate with evidence. Do not weaken checks to make a gate green.
 
-## Required tests
+## Bug fixes
 
-- **Unit tests** for pure functions and business logic.
-- **Integration tests** for data access and external adapters where feasible.
-- **Regression tests** for every fixed bug.
+1. Reproduce the defect as a test and confirm failure for the intended reason.
+2. Commit that failing test and preserve its commit and output in the change record.
+3. Fix the implementation while preserving the regression proof.
+4. Run the regression and full applicable verification, then obtain independent review.
 
-## Fixing bugs
+Controller fix mode (`taskKind: "fix"` with `testPaths`) executes the failing
+regression stage after plan acceptance, requires independent failure review, and
+freezes the committed test baseline through implementation. A command crash or
+unavailable test is not evidence of the intended failure.
 
-Write the failing test first. It is the proof the bug is gone.
+The optional `SDLC_PROTECT_TESTS=1` local guard catches supported editor operations
+after step 2. It cannot cover arbitrary shell writes. Review the Git diff from the
+regression commit to detect edited, renamed or removed tests. A trusted verifier
+may enforce additional baseline rules mechanically. A green suite alone does not
+establish a valid failing-test history.
 
-1. Reproduce the bug as a test. Run it and **confirm it fails for the reason you expect**.
-2. **Commit that test.**
-3. Start the fix session with `SDLC_PROTECT_TESTS=1` in its environment (for example
-   `SDLC_PROTECT_TESTS=1 claude`), then fix the code **without touching the test** — the
-   `guard-tests.mjs` hook blocks test edits while it is set. Hooks read the environment the
-   harness was launched with, so the variable cannot be set from inside the session.
-4. `SDLC_ALLOW_TEST_EDIT=1` (set the same way) is the documented escape hatch, for when the
-   test itself was wrong and a human agreed. Use it only then.
+If the test was wrong, obtain independent acceptance of the correction under the
+existing scope, capture renewed failure evidence, and commit a new baseline.
+The controller permits corrections during regression review. Once that baseline
+is accepted, correcting it requires a fresh reviewed run under the existing
+bounded authorization; build cannot rewrite an accepted baseline.
+Escalate only when the correction changes intent, scope or protected policy.
+Environment overrides are local guard configuration, never independent approval.
 
-## Test data
+## CI and execution
 
-- Tests must not depend on production data or live external services unless explicitly approved.
-- Use in-memory databases, mocks, fixtures, or synthetic data.
+Required checks run on every eligible PR; optional agent evals use a separate
+workflow. Missing project commands must fail visibly. The changelog checker is
+available as `node scripts/check-changelog.mjs CHANGELOG.md`.
 
-## Running tests
-
-<!-- Exact command(s). Must match the "Commands" section of AGENTS.md and .github/workflows/ci.yml. -->
-
-```bash
-# Example:
-# pytest -q
-```
-
-The changelog format check is always available independently of the project
-toolchain:
-
-```bash
-node scripts/check-changelog.mjs CHANGELOG.md
-```
-
-## Verification is part of done
-
-Run the build, the test suite, and the lint/type-check **before reporting a task
-complete, and paste the output** into the PR. "It compiles" is not verification;
-evidence comes from the toolchain. If a test fails, **fix the code, not the test.**
-
-## CI expectations
-
-- The test suite must pass before merge (enforced by CI + branch protection).
-- New code should not reduce overall coverage without justification.
-- The changelog checker must pass even for documentation-only changes.
-
-## What does not need tests
-
-- Pure configuration changes.
-- Documentation-only changes.
-- Throwaway prototypes explicitly marked as experimental.
+Tests execute code controlled by the implementation. Run both tests and model
+runners without controller-state access, integration credentials or standing
+production permissions in an authoritative deployment; see `WORKFLOW.md`.

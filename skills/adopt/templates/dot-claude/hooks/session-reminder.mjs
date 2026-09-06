@@ -8,6 +8,8 @@
 process.stdout.write(
   "Spec-First SDLC: read HANDOFF.md, then AGENTS.md, then the active change's " +
     "docs/changes/<slug>/ (intent.md, spec.md, plan.md) before acting. " +
-    "No code before an approved plan.md. Verify with the project's commands and " +
-    "paste the output. Update HANDOFF.md before ending the session."
+    "Follow AGENTS.md for stage gates, minor-change exceptions and escalation. " +
+    "Recorded authorization survives resume and compaction. Read-only investigation " +
+    "does not require a plan or handoff edit. Verify changes using project commands; " +
+    "update durable handoff state when work changes it."
 );
