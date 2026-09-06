@@ -1,6 +1,6 @@
 # Decision: Evidence-gated autonomous teams across harnesses
 
-**Status:** Proposed for independent review
+**Status:** Accepted
 **Date:** 2026-09-05
 **Decider:** Eiwe through the accepted implementation request; independent design review
 

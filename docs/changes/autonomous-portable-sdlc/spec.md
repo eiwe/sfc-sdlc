@@ -1,6 +1,6 @@
 # Spec: Autonomous portable SDLC
 
-**Status:** Proposed for independent review
+**Status:** Accepted by independent design review
 **Date:** 2026-09-05
 **Intent:** [intent.md](intent.md)
 **Decision:** [ADR-0003](../../decisions/0003-autonomous-portable-sdlc.md)
@@ -64,3 +64,10 @@ Live authenticated model sessions/platform settings are a separate compatibility
 A hosted scheduler, general-purpose agent framework, billing system, automatic
 credential provisioning, unconditional production access, or pretending local hook
 regexes establish an adversarial security boundary. No new runtime dependencies.
+
+## Design gate
+
+Independent agent `/root/design_review` approved revision `b67d86e` on 2026-09-05.
+It specifically required isolating verification commands as worker-controlled code,
+binding evidence to policy and revision, retaining budgets on resume, and rejecting
+invalid outcomes. These obligations are part of the implementation acceptance.
